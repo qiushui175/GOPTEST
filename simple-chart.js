@@ -11,9 +11,12 @@ class SimpleChart {
         this.data = config.data || { labels: [], datasets: [] };
         this.options = config.options || {};
         
+        // Bind resize handler for proper event listener removal
+        this._resizeHandler = () => this.resize();
+        
         // Set canvas size
         this.resize();
-        window.addEventListener('resize', () => this.resize());
+        window.addEventListener('resize', this._resizeHandler);
         
         this.draw();
     }
@@ -122,12 +125,7 @@ class SimpleChart {
             data.forEach((value, i) => {
                 const x = padding.left + (chartWidth * i / (data.length - 1 || 1));
                 const y = padding.top + chartHeight - ((value - minValue) / (maxValue - minValue) * chartHeight);
-                
-                if (i === 0) {
-                    ctx.lineTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
+                ctx.lineTo(x, y);
             });
             
             ctx.lineTo(padding.left + chartWidth, height - padding.bottom);
@@ -171,7 +169,7 @@ class SimpleChart {
     }
     
     destroy() {
-        window.removeEventListener('resize', this.resize);
+        window.removeEventListener('resize', this._resizeHandler);
     }
 }
 

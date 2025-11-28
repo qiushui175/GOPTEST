@@ -48,4 +48,4 @@ npx serve .
 - HTML5
 - CSS3
 - JavaScript (ES6+)
-- Chart.js - 用于绑定折线图
+- SimpleChart - 自定义折线图库（无外部依赖）
