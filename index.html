@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股票交易游戏</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="simple-chart.js"></script>
+</head>
+<body>
+    <!-- Setup Screen -->
+    <div id="setup-screen" class="screen">
+        <h1>股票交易游戏</h1>
+        <div class="setup-form">
+            <div class="form-group">
+                <label for="initial-price">初始股价</label>
+                <input type="number" id="initial-price" value="100" min="1" step="1">
+            </div>
+            <div class="form-group">
+                <label for="game-days">游戏天数</label>
+                <input type="number" id="game-days" value="30" min="1" max="365" step="1">
+            </div>
+            <div class="form-group">
+                <label for="initial-funds">玩家初始资金</label>
+                <input type="number" id="initial-funds" value="10000" min="100" step="100">
+            </div>
+            <div class="form-group">
+                <label for="rise-probability">上涨概率 (%)</label>
+                <input type="number" id="rise-probability" value="50" min="0" max="100" step="1">
+            </div>
+            <button id="start-game-btn" class="btn-primary">开始游戏</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen hidden">
+        <div class="game-header">
+            <h1>股票交易游戏</h1>
+            <div class="game-info">
+                <span id="current-day">第 1 天</span>
+                <span id="days-remaining">剩余 30 天</span>
+            </div>
+        </div>
+
+        <div class="game-container">
+            <!-- Stock Panel -->
+            <div class="stock-panel">
+                <h2>股票信息</h2>
+                <div class="stock-price">
+                    <span class="label">今日股价:</span>
+                    <span id="stock-price" class="price">¥100.00</span>
+                    <span id="price-change" class="change"></span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="stock-chart"></canvas>
+                </div>
+                <button id="next-day-btn" class="btn-primary">进入下一天</button>
+            </div>
+
+            <!-- Players Panel -->
+            <div class="players-panel">
+                <!-- Player 1 -->
+                <div class="player-panel" id="player1-panel">
+                    <h3>玩家 1</h3>
+                    <div class="player-info">
+                        <div class="info-row">
+                            <span class="label">现金:</span>
+                            <span id="player1-cash" class="value">¥10,000.00</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">持股:</span>
+                            <span id="player1-shares" class="value">0 股</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">总资产:</span>
+                            <span id="player1-total" class="value">¥10,000.00</span>
+                        </div>
+                    </div>
+                    <div class="chart-container small-chart">
+                        <canvas id="player1-chart"></canvas>
+                    </div>
+                    <div class="trade-controls">
+                        <div class="trade-input-group">
+                            <select id="player1-trade-type">
+                                <option value="shares">按股数</option>
+                                <option value="amount">按金额</option>
+                            </select>
+                            <input type="number" id="player1-trade-value" min="0" step="1" value="0">
+                        </div>
+                        <div class="trade-buttons">
+                            <button class="btn-buy" onclick="executeTrade(1, 'buy')">买入</button>
+                            <button class="btn-sell" onclick="executeTrade(1, 'sell')">卖出</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Player 2 -->
+                <div class="player-panel" id="player2-panel">
+                    <h3>玩家 2</h3>
+                    <div class="player-info">
+                        <div class="info-row">
+                            <span class="label">现金:</span>
+                            <span id="player2-cash" class="value">¥10,000.00</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">持股:</span>
+                            <span id="player2-shares" class="value">0 股</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">总资产:</span>
+                            <span id="player2-total" class="value">¥10,000.00</span>
+                        </div>
+                    </div>
+                    <div class="chart-container small-chart">
+                        <canvas id="player2-chart"></canvas>
+                    </div>
+                    <div class="trade-controls">
+                        <div class="trade-input-group">
+                            <select id="player2-trade-type">
+                                <option value="shares">按股数</option>
+                                <option value="amount">按金额</option>
+                            </select>
+                            <input type="number" id="player2-trade-value" min="0" step="1" value="0">
+                        </div>
+                        <div class="trade-buttons">
+                            <button class="btn-buy" onclick="executeTrade(2, 'buy')">买入</button>
+                            <button class="btn-sell" onclick="executeTrade(2, 'sell')">卖出</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over" class="game-over hidden">
+            <h2>游戏结束!</h2>
+            <div id="final-results"></div>
+            <button id="restart-btn" class="btn-primary" onclick="restartGame()">重新开始</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
